@@ -206,6 +206,82 @@
             width: 100%;
         }
 
+        .photo-container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .photo-holder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .photo-placeholder {
+            position: relative;
+        }
+
+        .photo-frame {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #64ffda, #00bcd4, #64ffda);
+            padding: 8px;
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.3);
+            animation: photoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes photoGlow {
+            from { box-shadow: 0 0 30px rgba(100, 255, 218, 0.3); }
+            to { box-shadow: 0 0 50px rgba(100, 255, 218, 0.6), 0 0 70px rgba(100, 255, 218, 0.4); }
+        }
+
+        .photo-area {
+            background: #222;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background: #222;
+            border: 2px solid #64ffda;
+            box-shadow: 0 2px 16px rgba(100,255,218,0.15);
+        }
+
+        .photo-upload-hint {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+            opacity: 0.6;
+        }
+
+        .photo-upload-hint p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #64ffda;
+        }
+
+        .photo-upload-hint small {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            line-height: 1.4;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
@@ -236,6 +312,39 @@
             text-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
         }
 
+        .contact-info-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 0 auto;
+            max-width: 320px;
+        }
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            word-break: break-all;
+        }
+        .contact-info-item a {
+            color: #64ffda;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+        .contact-info-item a:active,
+        .contact-info-item a:focus {
+            outline: 2px solid #64ffda;
+        }
+        @media (max-width: 480px) {
+            .contact-info-list {
+                max-width: 100%;
+                gap: 10px;
+            }
+            .contact-info-item {
+                font-size: 1rem;
+            }
+        }
         @media (max-width: 768px) {
             .nav {
                 padding: 15px 20px;
@@ -264,6 +373,11 @@
             
             .section-title {
                 font-size: 2rem;
+            }
+            
+            .photo-frame {
+                width: 250px;
+                height: 250px;
             }
             
             .skills-grid {
@@ -478,6 +592,7 @@
         <div class="logo">Sri Charan</div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
+            <li><a href="#photo">Photo</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#projects">Projects</a></li>
@@ -492,6 +607,21 @@
                 <p>Computer Science Engineering Student & Web Developer</p>
                 <p>Creating digital experiences in the vast cosmos of technology</p>
                 <a href="#projects" class="cta-button">Explore My Universe</a>
+            </div>
+        </section>
+
+        <section id="photo" class="section">
+            <div class="photo-container">
+                <h2 class="section-title">Meet Sri Charan</h2>
+                <div class="photo-holder">
+                    <div class="photo-placeholder">
+                        <div class="photo-frame">
+                            <div class="photo-area">
+                                <img src="me.jpg" alt="Sri Charan" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -557,9 +687,12 @@
                         📧 Send Email to Sri Charan
                     </a>
                     <div style="margin-top: 30px;">
-                        <p>📧 charansri625@gmail.com</p>
-                        <p>📱 +91-7680085269</p>
-                        <p>🔗 <a href="https://www.linkedin.com/in/sri-charan-7555a8280/" target="_blank" style="color: #64ffda;">LinkedIn Profile</a></p>
+                        <div class="contact-info-list">
+                            <div class="contact-info-item">📧 charansri625@gmail.com</div>
+                            <div class="contact-info-item">📱 +91-7680085269</div>
+                            <div class="contact-info-item">🔗 <a href="https://www.linkedin.com/in/sri-charan-7555a8280/" target="_blank" style="color: #64ffda;">LinkedIn Profile</a></div>
+                            <div class="contact-info-item">🐙 <a href="https://github.com/sricharan234" target="_blank" style="color: #64ffda;">GitHub Profile</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
