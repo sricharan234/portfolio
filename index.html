@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Charan - 3D Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 50px;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #64ffda;
+            text-shadow: 0 0 10px #64ffda;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a:hover {
+            background: rgba(100, 255, 218, 0.1);
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 100px 50px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #64ffda, #ffffff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(100, 255, 218, 0.5); }
+            to { text-shadow: 0 0 30px rgba(100, 255, 218, 0.8), 0 0 40px rgba(100, 255, 218, 0.8); }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #64ffda, #00bcd4);
+            color: #000;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(100, 255, 218, 0.6);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px;
+            max-width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(100, 255, 218, 0.2);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+
+        .card h3 {
+            color: #64ffda;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(100, 255, 218, 0.2);
+        }
+
+        .project-links {
+            margin-top: 20px;
+        }
+
+        .project-links a {
+            display: inline-block;
+            margin-right: 15px;
+            padding: 8px 16px;
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            text-decoration: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .project-links a:hover {
+            background: rgba(100, 255, 218, 0.2);
+            transform: scale(1.05);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #64ffda;
+            box-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            color: #64ffda;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .section {
+                padding: 80px 20px 30px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <nav class="nav">
+        <div class="logo">Sri Charan</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <section id="home" class="section">
+            <div class="hero">
+                <h1>Gullakuntla Sri Charan</h1>
+                <p>Computer Science Engineering Student & Web Developer</p>
+                <p>Creating digital experiences in the vast cosmos of technology</p>
+                <a href="#projects" class="cta-button">Explore My Universe</a>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="card" style="max-width: 800px;">
+                <h2 class="section-title">About Me</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8; text-align: center;">
+                    I'm a passionate Computer Science Engineering student at Rajive Gandhi Memorial College of Engineering & Technology. 
+                    With a strong foundation in programming and web technologies, I love exploring the infinite possibilities 
+                    of the digital universe. My journey in technology is like navigating through a vast galaxy - 
+                    each project is a new star system to discover and master.
+                </p>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <div>
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="card">
+                        <h3>Programming Languages</h3>
+                        <p>C, C++, Python - Building the foundation of logical thinking and problem-solving</p>
+                    </div>
+                    <div class="card">
+                        <h3>Web Technologies</h3>
+                        <p>HTML, CSS, JavaScript - Crafting beautiful and interactive web experiences</p>
+                    </div>
+                    <div class="card">
+                        <h3>Database Management</h3>
+                        <p>MySQL - Organizing and managing data efficiently</p>
+                    </div>
+                    <div class="card">
+                        <h3>Tools & Platforms</h3>
+                        <p>HackerRank, Git - Continuous learning and version control</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <div>
+                <h2 class="section-title">Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>3D Galaxy Portfolio</h3>
+                        <p>An immersive 3D portfolio experience featuring a stunning galaxy background with animated solar system. 
+                        This project showcases advanced web development skills using Three.js for 3D graphics and animations.</p>
+                        <p><strong>Technologies:</strong> HTML, CSS, JavaScript, Three.js</p>
+                        <div class="project-links">
+                            <a href="#" onclick="alert('You are currently viewing this project!')">🌐 Current Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="contact-form">
+                <h2 class="section-title">Contact Me</h2>
+                <div style="text-align: center; margin-top: 30px;">
+                    <p style="font-size: 1.2rem; margin-bottom: 20px;">Ready to connect? Click below to send me an email!</p>
+                    <a href="mailto:charansri625@gmail.com" class="cta-button" style="display: inline-block; text-decoration: none; margin-bottom: 30px;">
+                        📧 Send Email to Sri Charan
+                    </a>
+                    <div style="margin-top: 30px;">
+                        <p>📧 charansri625@gmail.com</p>
+                        <p>📱 +91-7680085269</p>
+                        <p>🔗 <a href="https://www.linkedin.com/in/sri-charan-7555a8280/" target="_blank" style="color: #64ffda;">LinkedIn Profile</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Three.js Scene Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 1);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Create Galaxy Background
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 10000;
+        const starsArray = new Float32Array(starsCount * 3);
+
+        for (let i = 0; i < starsCount * 3; i++) {
+            starsArray[i] = (Math.random() - 0.5) * 2000;
+        }
+
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsArray, 3));
+        const starsMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 2,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const stars = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(stars);
+
+        // Create Nebula Effect
+        const nebulaGeometry = new THREE.BufferGeometry();
+        const nebulaCount = 3000;
+        const nebulaArray = new Float32Array(nebulaCount * 3);
+        const nebulaColors = new Float32Array(nebulaCount * 3);
+
+        for (let i = 0; i < nebulaCount; i++) {
+            nebulaArray[i * 3] = (Math.random() - 0.5) * 1500;
+            nebulaArray[i * 3 + 1] = (Math.random() - 0.5) * 1500;
+            nebulaArray[i * 3 + 2] = (Math.random() - 0.5) * 1500;
+
+            const color = new THREE.Color();
+            color.setHSL(Math.random() * 0.3 + 0.5, 0.7, 0.5);
+            nebulaColors[i * 3] = color.r;
+            nebulaColors[i * 3 + 1] = color.g;
+            nebulaColors[i * 3 + 2] = color.b;
+        }
+
+        nebulaGeometry.setAttribute('position', new THREE.BufferAttribute(nebulaArray, 3));
+        nebulaGeometry.setAttribute('color', new THREE.BufferAttribute(nebulaColors, 3));
+
+        const nebulaMaterial = new THREE.PointsMaterial({
+            size: 4,
+            transparent: true,
+            opacity: 0.6,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending
+        });
+
+        const nebula = new THREE.Points(nebulaGeometry, nebulaMaterial);
+        scene.add(nebula);
+
+        // Create Solar System
+        const planets = [];
+        const planetData = [
+            { radius: 8, distance: 150, speed: 0.02, color: 0xff6b35 }, // Sun-like
+            { radius: 3, distance: 200, speed: 0.015, color: 0x4a90e2 }, // Earth-like
+            { radius: 4, distance: 260, speed: 0.01, color: 0xe94b3c }, // Mars-like
+            { radius: 6, distance: 330, speed: 0.008, color: 0xf5a623 }, // Jupiter-like
+            { radius: 5, distance: 400, speed: 0.006, color: 0x7ed321 }  // Saturn-like
+        ];
+
+        planetData.forEach((data, index) => {
+            const geometry = new THREE.SphereGeometry(data.radius, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: data.color,
+                transparent: true,
+                opacity: 0.8
+            });
+            const planet = new THREE.Mesh(geometry, material);
+            
+            planet.userData = {
+                distance: data.distance,
+                speed: data.speed,
+                angle: Math.random() * Math.PI * 2
+            };
+            
+            planets.push(planet);
+            scene.add(planet);
+        });
+
+        camera.position.z = 100;
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate stars and nebula
+            stars.rotation.x += 0.0005;
+            stars.rotation.y += 0.0002;
+            nebula.rotation.x -= 0.0003;
+            nebula.rotation.y += 0.0001;
+
+            // Animate planets
+            planets.forEach(planet => {
+                planet.userData.angle += planet.userData.speed;
+                planet.position.x = Math.cos(planet.userData.angle) * planet.userData.distance;
+                planet.position.z = Math.sin(planet.userData.angle) * planet.userData.distance;
+                planet.rotation.y += 0.01;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle Window Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Mouse Movement Effect
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0001;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0001;
+        });
+
+        // Apply mouse effect to camera
+        function updateCamera() {
+            camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
+            camera.position.y += (mouseY * 10 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+            requestAnimationFrame(updateCamera);
+        }
+        updateCamera();
+    </script>
+</body>
+</html>
