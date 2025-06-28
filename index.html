@@ -245,6 +245,11 @@
                 gap: 15px;
             }
             
+            .nav-links a {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+            
             .section {
                 padding: 80px 20px 30px;
             }
@@ -253,8 +258,215 @@
                 font-size: 2.5rem;
             }
             
+            .hero p {
+                font-size: 1rem;
+            }
+            
             .section-title {
                 font-size: 2rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .card, .project-card {
+                margin: 10px 0;
+                padding: 20px;
+            }
+            
+            .cta-button {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav {
+                padding: 10px 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .nav-links {
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links a {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .section {
+                padding: 70px 15px 25px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+            }
+            
+            .card, .project-card {
+                padding: 15px;
+                margin: 10px 0;
+            }
+            
+            .card h3, .project-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+            
+            .contact-form {
+                padding: 0 10px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .nav {
+                padding: 8px 10px;
+            }
+            
+            .logo {
+                font-size: 18px;
+            }
+            
+            .nav-links a {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 0.85rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .card, .project-card {
+                padding: 12px;
+            }
+        }
+
+        /* Tablet Landscape */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .section {
+                padding: 90px 40px 40px;
+            }
+            
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+
+        /* Large Desktop */
+        @media (min-width: 1200px) {
+            .section {
+                padding: 120px 80px 60px;
+            }
+            
+            .hero h1 {
+                font-size: 5rem;
+            }
+            
+            .hero p {
+                font-size: 1.4rem;
+            }
+            
+            .section-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .nav-links a:hover {
+                background: rgba(100, 255, 218, 0.1);
+                box-shadow: none;
+            }
+            
+            .card:hover, .project-card:hover {
+                transform: none;
+                box-shadow: 0 10px 20px rgba(100, 255, 218, 0.1);
+            }
+            
+            .cta-button:hover {
+                transform: none;
+                box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+            }
+        }
+
+        /* High DPI Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .logo {
+                text-shadow: 0 0 15px #64ffda;
+            }
+            
+            .section-title {
+                text-shadow: 0 0 25px rgba(100, 255, 218, 0.6);
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            #canvas-container {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .nav {
+                position: static;
+                background: white;
+                color: black;
+            }
+            
+            .section {
+                min-height: auto;
+                padding: 20px;
             }
         }
     </style>
@@ -451,18 +663,18 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            // Rotate stars and nebula
-            stars.rotation.x += 0.0005;
-            stars.rotation.y += 0.0002;
-            nebula.rotation.x -= 0.0003;
-            nebula.rotation.y += 0.0001;
+            // Rotate stars and nebula with mobile optimization
+            stars.rotation.x += 0.0005 * animationSpeed;
+            stars.rotation.y += 0.0002 * animationSpeed;
+            nebula.rotation.x -= 0.0003 * animationSpeed;
+            nebula.rotation.y += 0.0001 * animationSpeed;
 
-            // Animate planets
+            // Animate planets with mobile optimization
             planets.forEach(planet => {
-                planet.userData.angle += planet.userData.speed;
+                planet.userData.angle += planet.userData.speed * animationSpeed;
                 planet.position.x = Math.cos(planet.userData.angle) * planet.userData.distance;
                 planet.position.z = Math.sin(planet.userData.angle) * planet.userData.distance;
-                planet.rotation.y += 0.01;
+                planet.rotation.y += 0.01 * animationSpeed;
             });
 
             renderer.render(scene, camera);
@@ -477,6 +689,32 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
+        // Mobile Performance Optimizations
+        let isMobile = window.innerWidth <= 768;
+        let animationSpeed = isMobile ? 0.5 : 1;
+
+        // Adjust animation speed for mobile
+        function updateAnimationSpeed() {
+            isMobile = window.innerWidth <= 768;
+            animationSpeed = isMobile ? 0.5 : 1;
+        }
+
+        window.addEventListener('resize', updateAnimationSpeed);
+
+        // Touch Device Detection
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        // Mouse movement variables
+        let mouseX = 0, mouseY = 0;
+
+        // Optimize mouse movement for touch devices
+        if (!isTouchDevice) {
+            document.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX - window.innerWidth / 2) * 0.0001;
+                mouseY = (e.clientY - window.innerHeight / 2) * 0.0001;
+            });
+        }
+
         // Smooth Scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -489,13 +727,6 @@
                     });
                 }
             });
-        });
-
-        // Mouse Movement Effect
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.0001;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.0001;
         });
 
         // Apply mouse effect to camera
